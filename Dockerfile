@@ -43,7 +43,7 @@ RUN mkdir -p keys && chown -R node:node /app
 USER node
 
 # Port utilisé par Express
-EXPOSE 3000
+EXPOSE 3002
 
 # Lancer l'application
 CMD ["node", "dist/app.js"]
