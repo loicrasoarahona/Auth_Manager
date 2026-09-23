@@ -33,6 +33,15 @@ RUN npm ci --omit=dev
 # Copier le code compilé
 COPY --from=builder /app/dist ./dist
 
+# Le fichier .env et les clés JWT (keys/private.key, keys/public.key) ne
+# sont jamais copiés dans l'image (voir .dockerignore) : ils doivent être
+# fournis au runtime via --env-file / -e et un volume monté sur ./keys.
+# En production, le serveur refuse de démarrer si ces clés sont absentes.
+RUN mkdir -p keys && chown -R node:node /app
+
+# Ne pas exécuter le processus en root
+USER node
+
 # Port utilisé par Express
 EXPOSE 3000
 
